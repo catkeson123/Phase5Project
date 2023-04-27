@@ -16,7 +16,7 @@ db = SQLAlchemy(metadata=metadata)
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    serialize_rules = ('-songs',)
+    serialize_rules = ('-songs','-reviews.user')
 
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String)
