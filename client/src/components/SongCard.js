@@ -5,8 +5,8 @@ function SongCard({song}) {
 
     return (
         <div>
-            <h3>{song.title}</h3>
-            <h3>{song.artist}</h3>
+            <h3>Title: {song.title}</h3>
+            <h3>Artist: {song.artist}</h3>
         </div>
     )
 }

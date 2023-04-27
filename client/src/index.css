@@ -1,0 +1,27 @@
+.button {
+    padding: 0.5em 1.5em;
+    border-radius: 8px;
+    /* color: black; */
+    color: #c71111;
+    background: none;
+    max-width: 300px;
+    font-size: 1.1em;
+    border: 2px solid #c71111;
+    cursor: pointer;
+    margin: 15px;
+    margin-top: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: right;
+    align-items: right;
+    margin-bottom: 50px;
+    background: rgb(179, 173, 173)s;
+}
