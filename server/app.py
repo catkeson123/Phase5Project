@@ -9,7 +9,7 @@ from flask_restful import Api, Resource
 from sqlalchemy.exc import IntegrityError
 
 # Local imports
-from config import app, db, api
+from config import app, db, api, bcrypt
 from models import db, User, Song, Review
 
 # Views go here!
@@ -24,6 +24,7 @@ migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
+
 class Home(Resource):
     def get(self):
         return "Welcome to SoundScape"
@@ -34,6 +35,16 @@ class Users(Resource):
     def get(self):
         u_list = [u.to_dict() for u in User.query.all()]
         return make_response(u_list, 200)
+    def post(self):
+        data = request.get_json()
+        try:
+            new_user = User(first_name=data['first_name'], last_name=data['last_name'], user_name=data['user_name'], email=data['email'], password_hash=data['password'])
+            db.session.add(new_user)
+            db.session.commit()
+        except:
+            return make_response({'error': 'All inputs need valid data'}, 422)
+        
+        return make_response(new_user.to_dict(), 201)
     
 api.add_resource(Users, '/users')
 
@@ -43,6 +54,37 @@ class UserByID(Resource):
         if u == None:
             return make_response({'error': 'User not found'}, 404) 
         return make_response(u.to_dict(), 200)
+    
+    def patch(self, id):
+        data = request.get_json()
+        user = User.query.filter_by(id=id).first()
+        if user == None:
+            return make_response({'error': 'User not found'}, 404)
+
+        for attr in data:
+            setattr(user, attr, data[attr])
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return make_response({'error': 'validation errors'}, 422)
+
+        response_dict = user.to_dict()
+
+        response = make_response(response_dict, 200)
+
+        return response
+    def delete(self, id):
+        user = User.query.filter_by(id=id).first()
+        if user == None:
+            return make_response({'error': 'User not found'}, 404)
+
+        db.session.delete(user)
+        db.session.commit()
+
+        return make_response('User Deleted', 201)
 
 api.add_resource(UserByID, '/users/<int:id>')
 
@@ -53,12 +95,70 @@ class Songs(Resource):
     
 api.add_resource(Songs, '/songs')
 
+# @app.before_request
+# def check_if_logged_in():
+#     if not session['user_id'] \
+#         and request.endpoint == 'reviews' :
+#         return {'error': 'Unauthorized'}, 401
+
 class Reviews(Resource):
     def get(self):
         r_list = [r.to_dict() for r in Review.query.all()]
         return make_response(r_list, 200)
+    def post(self):
+        data = request.get_json()
+        if data['user_id'] == None or data['song_id'] == None or data['rating'] == None:
+            db.session.rollback()
+            return make_response({'error': 'All inputs need valid data'}, 422)
+        else:
+            new_rev = Review(
+                user_id=data['user_id'], song_id=data['song_id'], rating=data['rating'], comment=data['comment'])
 
-api.add_resource(Reviews, '/reviews')
+            try:
+                db.session.add(new_rev)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return make_response({'error': 'All inputs need valid data'}, 422)
+
+            rev_dict = new_rev.to_dict()
+            return make_response(rev_dict, 201)
+
+api.add_resource(Reviews, '/reviews', endpoint='reviews')
+
+class ReviewByID(Resource):
+    def patch(self, id):
+        data = request.get_json()
+        rev = Review.query.filter_by(id=id).first()
+        if rev == None:
+            return make_response({'error': 'Review not found'}, 404)
+
+        for attr in data:
+            setattr(rev, attr, data[attr])
+
+        try:
+            db.session.add(rev)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return make_response({'error': 'validation errors'}, 422)
+
+        response_dict = rev.to_dict()
+
+        response = make_response(response_dict, 200)
+
+        return response
+    def delete(self, id):
+        rev = Review.query.filter_by(id=id).first()
+        if rev == None:
+            return make_response({'error': 'Review not found'}, 404)
+
+        db.session.delete(rev)
+        db.session.commit()
+
+        return make_response('Review Deleted', 201)
+
+api.add_resource(ReviewByID, '/reviews/<int:id>')
 
 class Login(Resource):
 
@@ -66,12 +166,16 @@ class Login(Resource):
         ...
 
     def post(self):
-        user = User.query.filter(
-           User.user_name == request.get_json()['username']
-        ).first()
+        username = request.get_json()['username']
+        user = User.query.filter(User.user_name == username).first()
 
-        session['user_id'] = user.id
-        return user.to_dict()
+        password = request.get_json()['password']
+
+        if user.authenticate(password):
+            session['user_id'] = user.id
+            return user.to_dict(), 200
+
+        return {'error': 'Invalid username or password'}, 401
 
 api.add_resource(Login, '/login')
 

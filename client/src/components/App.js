@@ -5,6 +5,8 @@ import Songs from "./Songs";
 import SongCard from "./SongCard";
 import Profile from "./Profile";
 import Header from "./Header";
+import Reviews from "./Reviews";
+import Review from "./Review";
 
 function App() {
   const [songs, setSongs] = useState([]);
@@ -17,6 +19,17 @@ function App() {
 
   let songCards = songs.map((song) => <SongCard key={song.id} song={song} />);
 
+ 
+    const [reviews, setReviews] = useState([]);
+    useEffect(() => {
+        fetch("/reviews")
+            .then((r) => r.json())
+            .then(setReviews);
+        }, []);
+
+    let displayReviews = reviews.map((review) => <Review key={review.id} review={review} />);
+  
+  
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -42,6 +55,9 @@ function App() {
         </Route>
         <Route exact path="/songs">
             <Songs songCards={songCards}/>
+        </Route>
+        <Route exact path="/reviews">
+            <Reviews reviews={displayReviews}/>
         </Route>
         <Route path="/profile">
             <Profile user={user}/>

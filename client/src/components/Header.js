@@ -13,8 +13,9 @@ function Header({onLogout, user}) {
         <header className='header'>
             <NavLink className="button" exact to="/">HOME</NavLink>
             <NavLink className="button" exact to="/songs">SONGS</NavLink>
+            <NavLink className="button" exact to="/reviews">REVIEWS</NavLink>
             {user && <NavLink className="button" exact to="/profile">PROFILE</NavLink>}
-            <button className="button" onClick={handleLogout}>LOGOUT</button>
+            {user && <button className="button" onClick={handleLogout}>LOGOUT</button>}
         </header>
     )
 }

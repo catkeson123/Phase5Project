@@ -3,6 +3,8 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.ext.hybrid import hybrid_property
+from config import bcrypt
 
 metadata = MetaData(naming_convention={
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
@@ -21,10 +23,33 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
-    user_name = db.Column(db.String, unique=True)
+    user_name = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String)
+    _password_hash = db.Column(db.String, nullable=False)
 
     reviews = db.relationship('Review', backref='user', cascade='all, delete-orphan')
     songs = association_proxy('reviews', 'song')
+
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+
+    @password_hash.setter
+    def password_hash(self, password):
+        # utf-8 encoding and decoding is required in python 3
+        password_hash = bcrypt.generate_password_hash(
+            password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(
+            self._password_hash, password.encode('utf-8'))
+
+    @validates('email')
+    def validate_email(self, key, email):
+        if '@' not in email:
+            raise ValueError('Must be a valid email address')
+        return email
 
 class Song(db.Model, SerializerMixin):
     __tablename__ = 'songs'

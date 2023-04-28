@@ -21,9 +21,9 @@ if __name__ == '__main__':
         print("Starting seed...")
         # Seed code goes here!
 
-        u1 = User(first_name = 'Calvin', last_name = 'Atkeson', user_name = 'catkeson')
-        u2 = User(first_name = 'Bob', last_name = 'Smith', user_name = 'bobbysmith')
-        u3 = User(first_name = 'Joe', last_name = 'Dirt', user_name = 'joedirt123')
+        u1 = User(first_name = 'Calvin', last_name = 'Atkeson', user_name = 'catkeson', password_hash = 'catkeson123')
+        u2 = User(first_name = 'Bob', last_name = 'Smith', user_name = 'bobbysmith', password_hash = 'bobbysmith123')
+        u3 = User(first_name = 'Joe', last_name = 'Dirt', user_name = 'joedirt123', password_hash = 'joe123')
 
         s1 = Song( title = "Thriller", artist = "Micheal Jackson", album = "Thriller")
         s2 = Song( title = "Imagine", artist = "John Lennon", album = "Imagine")

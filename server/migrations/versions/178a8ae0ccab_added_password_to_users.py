@@ -1,8 +1,8 @@
-"""initial models
+"""added password to users
 
-Revision ID: e3f4f766ce33
+Revision ID: 178a8ae0ccab
 Revises: 
-Create Date: 2023-04-26 14:26:13.154705
+Create Date: 2023-04-28 10:39:18.186574
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e3f4f766ce33'
+revision = '178a8ae0ccab'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,9 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(), nullable=True),
     sa.Column('last_name', sa.String(), nullable=True),
-    sa.Column('user_name', sa.String(), nullable=True),
+    sa.Column('user_name', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('_password_hash', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('user_name', name=op.f('uq_users_user_name'))
     )
