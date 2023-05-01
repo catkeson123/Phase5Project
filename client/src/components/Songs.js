@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function Songs({songCards}) {
     return (
         <div>
-            <div>
+            <div className="songList">
                 {songCards}
             </div>
         </div>

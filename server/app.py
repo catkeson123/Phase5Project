@@ -31,6 +31,12 @@ class Home(Resource):
     
 api.add_resource(Home, '/')
 
+@app.before_request
+def check_if_logged_in():
+    if not session['user_id'] \
+        and request.endpoint == 'users' :
+        return {'error': 'Unauthorized'}, 401
+
 class Users(Resource):
     def get(self):
         u_list = [u.to_dict() for u in User.query.all()]
@@ -46,7 +52,7 @@ class Users(Resource):
         
         return make_response(new_user.to_dict(), 201)
     
-api.add_resource(Users, '/users')
+api.add_resource(Users, '/users', endpoint='users')
 
 class UserByID(Resource):
     def get(self, id):
@@ -94,12 +100,6 @@ class Songs(Resource):
         return make_response(s_list, 200)
     
 api.add_resource(Songs, '/songs')
-
-# @app.before_request
-# def check_if_logged_in():
-#     if not session['user_id'] \
-#         and request.endpoint == 'reviews' :
-#         return {'error': 'Unauthorized'}, 401
 
 class Reviews(Resource):
     def get(self):

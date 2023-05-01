@@ -6,15 +6,18 @@ function Home({user, onLogin}) {
     if (!user){
         return (
             <div>
-                <h1>Welcome to SoundScape</h1>
-                <Login onLogin={onLogin}/>
+                <h1 className="home">Welcome to SoundScape</h1>
+                <div className="home">
+                    <h1>Log in:</h1>
+                    <Login onLogin={onLogin}/>
+                </div>
             </div>
         )
     }
     else {
         return (
             <div>
-                <h1>Welcome to SoundScape, {user.user_name}</h1>
+                <h1 className="home">Welcome to SoundScape, {user.user_name}</h1>
             </div>
             
         )

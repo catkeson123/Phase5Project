@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from "react";
 
-function ReviewCard ({review}) {
+function ReviewCard ({review, removeReviewFromState}) {
+    
+    const handleDeleteClick = (id) => {
+        fetch(`/reviews/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(r => r.json())
+            .then(() => removeReviewFromState(id))
+        window.alert("Review deleted successfully");
+    }
+
     return (
-        <div>
-            <h3>Song: {review.song.title} by {review.song.artist}</h3>
-            <h4>Rating: {review.rating}</h4>
-            <h4>Comment: {review.comment}</h4>
+        <div className='reviewCard'>
+            <h2>Song: {review.song.title} by {review.song.artist}</h2>
+            <h3>Rating: {review.rating}</h3>
+            <h3>Comment: {review.comment}</h3>
+            <button className="button" onClick = {()=> handleDeleteClick(review.id)}>DELETE REVIEW</button>
         </div>
         
     )

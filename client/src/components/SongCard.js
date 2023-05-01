@@ -1,12 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
+import AddNewReview from './AddNewReview'
 
-function SongCard({song}) {
+function SongCard({song, addReviewToState, user}) {
     /* add functionality for if there is no album */
+    const [createForm, setCreateForm] = useState(false)
+
+    const handleClick = () => {
+        setCreateForm(!createForm)
+    }
 
     return (
-        <div>
+        <div className="songCard">
             <h3>Title: {song.title}</h3>
             <h3>Artist: {song.artist}</h3>
+            <button onClick={handleClick}>Click to Review Song</button>
+            {createForm && user ? <AddNewReview addReviewToState={addReviewToState} user={user} song={song} /> : <div></div>}
         </div>
     )
 }
