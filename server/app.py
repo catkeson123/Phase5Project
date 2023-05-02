@@ -156,7 +156,7 @@ class ReviewByID(Resource):
         db.session.delete(rev)
         db.session.commit()
 
-        return make_response('Review Deleted', 201)
+        return make_response({'msg': 'Review Deleted'}, 201)
 
 api.add_resource(ReviewByID, '/reviews/<int:id>')
 

@@ -13,19 +13,8 @@ import ViewProfile from "./ViewProfile"
 import { UserProvider } from "../context/user";
 
 function App() {
-  const [songs, setSongs] = useState([]);
-
-  useEffect(() => {
-    fetch("/songs")
-      .then((r) => r.json())
-      .then(setSongs);
-  }, []);
 
   const [reviews, setReviews] = useState([]);
-
-  const addReviewToState = newReview => {
-    setReviews([...reviews, newReview])
-  }
 
   useEffect(() => {
       fetch("/reviews")
@@ -33,53 +22,47 @@ function App() {
           .then(setReviews);
       }, []);
 
-  let displayReviews = reviews.map((review) => <Review key={review.id} review={review} />);
-  
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    fetch("/check_session").then((response) => {
-      if (response.ok) {
-        response.json().then((user) => setUser(user));
-      }
-    });
-  }, []);
-
-  let songCards = songs.map((song) => <SongCard key={song.id} addReviewToState={addReviewToState} user={user} song={song} />);
-
-  const onLogout = () => {setUser(null)}
-
-  const onLogin = (user) => {setUser(user)}
+  const addReviewToState = newReview => {
+  setReviews([...reviews, newReview])
+  }
 
   const removeReviewFromState = (deleteID) => {
-    setReviews(reviews => reviews.filter(review => {
-        return review.id != deleteID
-    }))
+  setReviews(reviews => reviews.filter(review => {
+      return review.id !== deleteID
+  }))
   }
+
+  console.log(reviews)
+
+  let displayReviews = reviews.map((review) => <Review key={review.id} review={review} />);
+
+  console.log(displayReviews)
 
   return (
     <div>
-        <Header onLogout={onLogout} user={user} />
-        <Route exact path='/users/:id'>
-            <ViewProfile />
-        </Route>
-        <Switch>
-        <Route exact path="/">
-            <Home user={user} onLogin={onLogin}/>
-        </Route>
-        <Route exact path="/songs">
-            <Songs songCards={songCards} addReviewToState={addReviewToState}/>
-        </Route>
-        <Route exact path="/reviews">
-            <Reviews reviews={displayReviews}/>
-        </Route>
-        <Route exact path="/users">
-            <Users user={user}/>
-        </Route>
-        <Route path="/profile">
-            <Profile user={user} removeReviewFromState={removeReviewFromState} setUser={setUser}/>
-        </Route>
-        </Switch>
+        <UserProvider>
+            <Header />
+            <Route exact path='/users/:id'>
+                <ViewProfile />
+            </Route>
+            <Switch>
+                <Route exact path="/">
+                    <Home/>
+                </Route>
+                <Route exact path="/songs">
+                    <Songs addReviewToState={addReviewToState}/>
+                </Route>
+                <Route exact path="/reviews">
+                    <Reviews reviews={displayReviews}/>
+                </Route>
+                <Route exact path="/users">
+                    <Users/>
+                </Route>
+                <Route path="/profile">
+                    <Profile removeReviewFromState={removeReviewFromState}/>
+                </Route>
+            </Switch>
+        </UserProvider>
     </div>
   );
 }

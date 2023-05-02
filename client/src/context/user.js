@@ -1,11 +1,17 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
-// create the context
 const UserContext = React.createContext();
 
-// create a provider component
 function UserProvider({ children }) {
     const [user, setUser] = useState(null);
+
+    useEffect(() => {
+    fetch("/check_session").then((response) => {
+      if (response.ok) {
+        response.json().then((user) => setUser(user));
+      }
+    });
+    }, []);
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import ReviewCard from "./ReviewCard"
 import ProfileEditForm from "./ProfileEditForm";
+import { UserContext } from "../context/user";
 
-function Profile({user, onLogout, removeReviewFromState, setUser}) {
+function Profile({onLogout, removeReviewFromState}) {
+    const { user, setUser } = useContext(UserContext);
+
     const [editForm, setEditForm] = useState(false)
     
     const onUpdateProfile = (updatedUser) => {
@@ -20,6 +23,15 @@ function Profile({user, onLogout, removeReviewFromState, setUser}) {
         setEditForm(!editForm)
     }
 
+    const removeReviewFromUserState = (doomedReviewId) => {
+        const userCopy = {...user}
+        const reviewsCopy = user.reviews.filter((review) => {
+            return review.id !== doomedReviewId
+        })
+        userCopy.reviews = reviewsCopy
+        setUser(userCopy)
+    }
+
     if (!user) {
         return (
             <div>
@@ -28,7 +40,7 @@ function Profile({user, onLogout, removeReviewFromState, setUser}) {
         )
     } 
 
-    let renderReviews = user.reviews.map(review => <ReviewCard key={review.id} review={review} removeReviewFromState={removeReviewFromState}/>);
+    let renderReviews = user.reviews.map(review => <ReviewCard key={review.id} review={review} removeReviewFromState={removeReviewFromState} removeReviewFromUserState={removeReviewFromUserState}/>);
 
     return(
         <div className='profile'>

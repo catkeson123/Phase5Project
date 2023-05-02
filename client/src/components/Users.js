@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import UserCard from "./UserCard"
+import { UserContext } from "../context/user";
 
-function Users({user}) {
+function Users() {
+    const { user, setUser } = useContext(UserContext);
     const[users, setUsers] = useState([]);
 
-    
     useEffect(() => {
         fetch("/users")
             .then((r) => r.json())
@@ -13,7 +14,7 @@ function Users({user}) {
 
     let userCards = []
     if(user){
-        userCards = users.map((user) => <UserCard key={user.id} user={user}/>)
+        userCards = users.map((user1) => <UserCard key={user1.id} user={user1}/>)
     } else {
         userCards = []
     }

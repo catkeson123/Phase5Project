@@ -2,7 +2,11 @@ import React, { useState, useRef, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { UserContext } from "../context/user";
 
-function Header({onLogout, user}) {
+function Header() {
+    const { user, setUser } = useContext(UserContext);
+
+    const onLogout = () => {setUser(null)}
+
     function handleLogout() {
         fetch("/logout", {
           method: "DELETE",

@@ -1,8 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./Login"
+import { UserContext } from "../context/user";
 
-function Home({user, onLogin}) {
+function Home() {
+    const { user, setUser } = useContext(UserContext);
+
+    const onLogin = (user) => {setUser(user)}
     if (!user){
         return (
             <div>

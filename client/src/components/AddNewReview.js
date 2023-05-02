@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddNewReview({addReviewToState, user, song}) {
+function AddNewReview({addReviewToState, user, song, addReviewFromUserState}) {
 
     const [newRating, setNewRating] = useState('')
     const [newComment, setNewComment] = useState('')
@@ -11,6 +11,8 @@ function AddNewReview({addReviewToState, user, song}) {
         const newReview = {
             user_id: user.id,
             song_id: song.id,
+            user: user,
+            song: song,
             rating: newRating,
             comment: newComment
         }
@@ -35,7 +37,10 @@ function AddNewReview({addReviewToState, user, song}) {
             body: JSON.stringify(newReview)
         })
             .then(handleErrors)
-            .then(addReviewToState)
+            .then(() => {
+                addReviewToState(newReview)
+                addReviewFromUserState(newReview)
+            })
             .catch(error => console.error("Validation Error: Ensure all fields are valid.", error))
         window.alert("Review Created")
         e.target.reset()

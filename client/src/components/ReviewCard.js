@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ReviewCard ({review, removeReviewFromState}) {
+function ReviewCard ({review, removeReviewFromState, removeReviewFromUserState}) {
     
     const handleDeleteClick = (id) => {
         fetch(`/reviews/${id}`, {
@@ -8,7 +8,10 @@ function ReviewCard ({review, removeReviewFromState}) {
             headers: { 'Content-Type': 'application/json' },
         })
             .then(r => r.json())
-            .then(() => removeReviewFromState(id))
+            .then(() => {
+                removeReviewFromState(id)
+                removeReviewFromUserState(review.id)
+            })
         window.alert("Review deleted successfully");
     }
 
