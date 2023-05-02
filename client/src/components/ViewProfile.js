@@ -13,20 +13,24 @@ function ViewProfile() {
             .then(setViewUser)
     }, [id])
 
+    console.log(viewUser)
+
     let renderReviews = []
 
     if (viewUser !== ""){
-        renderReviews = viewUser.reviews.map(review => <Review key={review.id} review={review}/>);
+        renderReviews = viewUser.reviews.map(review => <Review key={review.id} review={{...review, user: viewUser}}/>);
     } else {
         renderReviews = []
     }
 
     return (
-        <div>
+        <div className='profile'>
             <h1>Full Name: {viewUser.first_name} {viewUser.last_name}</h1>
             <h1>Username: {viewUser.user_name}</h1>
             <h1>Reviews:</h1>
-            {renderReviews}
+            <div className='reviewList'>
+                {renderReviews}
+            </div>
         </div>
     )
 }

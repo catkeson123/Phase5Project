@@ -31,17 +31,18 @@ function Profile({user, onLogout, removeReviewFromState, setUser}) {
     let renderReviews = user.reviews.map(review => <ReviewCard key={review.id} review={review} removeReviewFromState={removeReviewFromState}/>);
 
     return(
-        <div>
+        <div className='profile'>
             <h1>Full Name: {user.first_name} {user.last_name}</h1>
             <h1>Username: {user.user_name}</h1>
             <h1>Your Reviews:</h1>
-            {renderReviews}
+            <div className='reviewList'>
+                {renderReviews}
+            </div>
             <button className="button" onClick={handleClick}>EDIT PROFILE</button>
             {editForm? <ProfileEditForm onUpdateProfile={onUpdateProfile} user={user}/> : <div></div>}
             <button className="button" onClick={handleLogout}>LOGOUT</button>
         </div>
     )
-    
 }
 
 export default Profile;

@@ -6,12 +6,12 @@ const UserContext = React.createContext();
 // create a provider component
 function UserProvider({ children }) {
     const [user, setUser] = useState(null);
+
     return (
         <UserContext.Provider value={{ user, setUser }}>
-        {children}
+            {children}
         </UserContext.Provider>
     );
-    
 }
 
 export { UserContext, UserProvider };

@@ -67,7 +67,7 @@ class Song(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
 
-    serilize_rules = ('-user.reviews', '-song.reviews', '-song.users', '-user.songs')
+    serialize_rules = ('-user.reviews', '-song.reviews', '-song.users', '-user.songs')
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

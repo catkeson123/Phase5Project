@@ -10,6 +10,7 @@ import Review from "./Review";
 import Users from "./Users";
 import UserCard from "./UserCard";
 import ViewProfile from "./ViewProfile"
+import { UserProvider } from "../context/user";
 
 function App() {
   const [songs, setSongs] = useState([]);
@@ -20,12 +21,12 @@ function App() {
       .then(setSongs);
   }, []);
 
+  const [reviews, setReviews] = useState([]);
+
   const addReviewToState = newReview => {
     setReviews([...reviews, newReview])
   }
 
- 
-  const [reviews, setReviews] = useState([]);
   useEffect(() => {
       fetch("/reviews")
           .then((r) => r.json())
@@ -73,7 +74,7 @@ function App() {
             <Reviews reviews={displayReviews}/>
         </Route>
         <Route exact path="/users">
-            <Users />
+            <Users user={user}/>
         </Route>
         <Route path="/profile">
             <Profile user={user} removeReviewFromState={removeReviewFromState} setUser={setUser}/>
@@ -81,8 +82,6 @@ function App() {
         </Switch>
     </div>
   );
-   
-   
 }
 
 export default App;
