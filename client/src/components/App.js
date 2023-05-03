@@ -32,11 +32,7 @@ function App() {
   }))
   }
 
-  console.log(reviews)
-
   let displayReviews = reviews.map((review) => <Review key={review.id} review={review} />);
-
-  console.log(displayReviews)
 
   return (
     <div>

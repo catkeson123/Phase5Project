@@ -1,8 +1,19 @@
+body,
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    /* background-color: rgb(35, 34, 34); */
+    background:  rgb(50, 50, 50);
+}
+
 .button {
     padding: 0.5em 1.5em;
     border-radius: 8px;
     /* color: black; */
-    color: black;
+    color: white;
     background: none;
     max-width: 300px;
     font-size: 1.1em;
@@ -59,7 +70,7 @@
     margin-bottom: 5px;
     margin-top: 5px;
     justify-self: center;
-    color: black;
+    color: white;
 }
 
 .songList,
@@ -114,4 +125,5 @@ form {
     justify-content: center;
     justify-self: center;
     text-align: center;
+    color: white
 }
