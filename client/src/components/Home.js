@@ -1,12 +1,20 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
+import { UserContext } from "../context/user";
 import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./Login"
-import { UserContext } from "../context/user";
+import SignUp from "./SignUp"
+
 
 function Home() {
     const { user, setUser } = useContext(UserContext);
+    const [sign, setSign] = useState(false)
+
+    const handleClick = () => {
+        setSign(!sign)
+    }
 
     const onLogin = (user) => {setUser(user)}
+
     if (!user){
         return (
             <div>
@@ -14,6 +22,8 @@ function Home() {
                 <div className="home">
                     <h1>Log in:</h1>
                     <Login onLogin={onLogin}/>
+                    <button className='button' onClick={handleClick}>Sign Up</button>
+                    {sign ? <SignUp onLogin={onLogin}/> : <div></div>}
                 </div>
             </div>
         )

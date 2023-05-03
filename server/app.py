@@ -179,6 +179,22 @@ class Login(Resource):
 
 api.add_resource(Login, '/login')
 
+class SignUp(Resource):
+    
+    def post(self):
+        data = request.get_json()
+        try:
+            new_user = User(first_name=data['firstName'], last_name=data['lastName'], user_name=data['username'], email=data['email'], password_hash=data['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+        except:
+            return make_response({'error': 'All inputs need valid data'}, 422)
+        
+        return make_response(new_user.to_dict(), 201)
+    
+api.add_resource(SignUp, '/signup')
+
 class CheckSession(Resource):
 
     def get(self):
