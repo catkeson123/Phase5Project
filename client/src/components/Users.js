@@ -12,12 +12,11 @@ function Users() {
             .then(setUsers);
         }, []);
 
-    let filterUsers = users.filter((us) => {
-        return us.id !== user.id
-    } )
-
     let userCards = []
     if(user){
+        let filterUsers = users.filter((us) => {
+            return us.id !== user.id
+        } )
         userCards = filterUsers.map((user1) => <UserCard key={user1.id} user={user1}/>)
     } else {
         userCards = []

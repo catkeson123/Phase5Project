@@ -14,8 +14,6 @@ function Songs({addReviewToState}) {
         .then(setSongs);
     }, []);
 
-    console.log(user)
-
     const addReviewFromUserState = (newReview) => {
         const userCopy = {...user}
         const reviewsCopy = [...user.reviews, newReview]

@@ -54,7 +54,7 @@ function SignUp({ onLogin }) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder='Password'
           />
-          <button type="submit">Sign Up!</button>
+          <button className='button' type="submit">Sign Up!</button>
         </form>
         </div>
         

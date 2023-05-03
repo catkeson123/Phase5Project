@@ -33,7 +33,7 @@ function Login({ onLogin }) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'
         />
-        <button type="submit">Login</button>
+        <button className='button' type="submit">Login</button>
       </form>
       </div>
       

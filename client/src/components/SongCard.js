@@ -13,7 +13,7 @@ function SongCard({song, addReviewToState, user, addReviewFromUserState}) {
         <div className="songCard">
             <h3>Title: {song.title}</h3>
             <h3>Artist: {song.artist}</h3>
-            <button onClick={handleClick}>Click to Review Song</button>
+            <button className='button' onClick={handleClick}>Click to Review Song</button>
             {createForm && user ? <AddNewReview addReviewToState={addReviewToState} addReviewFromUserState={addReviewFromUserState} user={user} song={song} /> : <div></div>}
         </div>
     )
