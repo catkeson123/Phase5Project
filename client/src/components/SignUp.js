@@ -6,6 +6,7 @@ function SignUp({ onLogin }) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [picture, setPicture] = useState("");
   
     function handleSubmit(e) {
       e.preventDefault();
@@ -14,7 +15,7 @@ function SignUp({ onLogin }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: username, password: password, firstName: firstName, lastName: lastName, email: email,}),
+        body: JSON.stringify({ username: username, password: password, firstName: firstName, lastName: lastName, email: email, picture: picture,}),
       })
         .then((r) => r.json())
         .then((user) => onLogin(user));
@@ -47,6 +48,12 @@ function SignUp({ onLogin }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder='Email Address'
+          />
+          <input
+            type="text"
+            value={picture}
+            onChange={(e) => setPicture(e.target.value)}
+            placeholder='Profile Picture URL'
           />
           <input
             type="password"

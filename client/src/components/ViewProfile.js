@@ -25,6 +25,7 @@ function ViewProfile() {
 
     return (
         <div className='profile'>
+            <img src={viewUser.picture} alt={viewUser.user_name} />
             <h1>Full Name: {viewUser.first_name} {viewUser.last_name}</h1>
             <h1>Username: {viewUser.user_name}</h1>
             <h1>Reviews:</h1>

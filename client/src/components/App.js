@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
-import Songs from "./Songs";
-import SongCard from "./SongCard";
+import Albums from "./Albums";
+import AlbumCard from "./AlbumCard";
 import Profile from "./Profile";
 import Header from "./Header";
 import Reviews from "./Reviews";
@@ -45,8 +45,8 @@ function App() {
                 <Route exact path="/">
                     <Home/>
                 </Route>
-                <Route exact path="/songs">
-                    <Songs addReviewToState={addReviewToState}/>
+                <Route exact path="/albums">
+                    <Albums addReviewToState={addReviewToState}/>
                 </Route>
                 <Route exact path="/reviews">
                     <Reviews reviews={displayReviews}/>

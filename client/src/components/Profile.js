@@ -44,6 +44,7 @@ function Profile({onLogout, removeReviewFromState}) {
 
     return(
         <div className='profile'>
+            <img src={user.picture} alt={user.user_name} />
             <h1>Full Name: {user.first_name} {user.last_name}</h1>
             <h1>Username: {user.user_name}</h1>
             <h1>Your Reviews:</h1>

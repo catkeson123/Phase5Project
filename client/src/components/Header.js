@@ -16,7 +16,7 @@ function Header() {
     return (
         <header className='header'>
             <NavLink className="button" exact to="/">HOME</NavLink>
-            <NavLink className="button" exact to="/songs">SONGS</NavLink>
+            <NavLink className="button" exact to="/albums">ALBUMS</NavLink>
             <NavLink className="button" exact to="/reviews">REVIEWS</NavLink>
             <NavLink className="button" exact to="/users">USERS</NavLink>
             {user && <NavLink className="button" exact to="/profile">PROFILE</NavLink>}

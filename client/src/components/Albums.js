@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import SongCard from "./SongCard"
+import AlbumCard from "./AlbumCard"
 import { UserContext } from "../context/user";
 
-function Songs({addReviewToState}) {
+function Albums({addReviewToState}) {
     
     const { user, setUser } = useContext(UserContext);
 
-    const [songs, setSongs] = useState([]);
+    const [albums, setAlbums] = useState([]);
 
     useEffect(() => {
-        fetch("/songs")
+        fetch("/albums")
         .then((r) => r.json())
-        .then(setSongs);
+        .then(setAlbums);
     }, []);
 
     const addReviewFromUserState = (newReview) => {
@@ -21,16 +21,16 @@ function Songs({addReviewToState}) {
         setUser(userCopy)
     }
 
-    let songCards = songs.map((song) => <SongCard key={song.id} addReviewToState={addReviewToState} user={user} song={song} addReviewFromUserState={addReviewFromUserState} />);
+    let albumCards = albums.map((album) => <AlbumCard key={album.id} addReviewToState={addReviewToState} user={user} album={album} addReviewFromUserState={addReviewFromUserState} />);
 
     return (
         <div className='profile'>
-            <h1>Available Songs:</h1>
-            <div className="songList">
-                {songCards}
+            <h1>Available Albums:</h1>
+            <div className="albumList">
+                {albumCards}
             </div>
         </div>
     )
 }
 
-export default Songs
+export default Albums

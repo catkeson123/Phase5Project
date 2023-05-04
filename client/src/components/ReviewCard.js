@@ -17,9 +17,10 @@ function ReviewCard ({review, removeReviewFromState, removeReviewFromUserState})
 
     return (
         <div className='reviewCard'>
-            <h2>Song: {review.song.title} by {review.song.artist}</h2>
-            <h3>Rating: {review.rating}</h3>
-            <h3>Comment: {review.comment}</h3>
+            <img src={review.album.image} alt={review.album.title} />
+            <h3>Album: {review.album.title} by {review.album.artist}</h3>
+            <h2>Rating: {review.rating}</h2>
+            <h2>Comment: {review.comment}</h2>
             <button className="button" onClick = {()=> handleDeleteClick(review.id)}>DELETE REVIEW</button>
         </div>
         

@@ -5,10 +5,11 @@ function Review({review}) {
 
     return (
         <div className='reviewCard'>
-            <h3>Song: {review.song.title} by {review.song.artist}</h3>
+            <img src={review.album.image} alt={review.album.title} />
+            <h3>Album: {review.album.title} by {review.album.artist}</h3>
             <h3>Review by: {review.user.user_name}</h3>
-            <h3>Rating: {review.rating}</h3>
-            <h3>Comment: {review.comment}</h3>
+            <h2>Rating: {review.rating}</h2>
+            <h2>Comment: {review.comment}</h2>
         </div>
     )
 }

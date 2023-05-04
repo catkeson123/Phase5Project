@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function ProfileEditForm({ onUpdateProfile, user}) {
     const [formData, setFormData] = useState(user)
 
-    const { first_name, last_name, user_name, email, password_hash } = formData
+    const { first_name, last_name, user_name, email, picture, password_hash } = formData
 
     useEffect(() => {
         fetch(`/users/${user.id}`)
@@ -29,6 +29,7 @@ function ProfileEditForm({ onUpdateProfile, user}) {
                 last_name: formData.last_name,
                 user_name: formData.user_name,
                 email: formData.email,
+                picture: formData.picture,
                 password_hash: formData.password_hash
             })
         })
@@ -50,6 +51,8 @@ function ProfileEditForm({ onUpdateProfile, user}) {
                     <input onChange={handleChange} type="text" name="user_name" value={user_name} />
                     <label for="email"> Enter New Email: </label>
                     <input onChange={handleChange} type="text" name="email" value={email}/>
+                    <label for="picture"> Enter New Profile Picture URL: </label>
+                    <input onChange={handleChange} type="text" name="picture" value={picture}/>
                     <label for="password_hash"> Enter New Password: </label>
                     <input onChange={handleChange} type="text" name="password_hash" value={password_hash}/>
                     <button className="button" type="submit">Submit</button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddNewReview({addReviewToState, user, song, addReviewFromUserState}) {
+function AddNewReview({addReviewToState, user, album, addReviewFromUserState}) {
 
     const [newRating, setNewRating] = useState('')
     const [newComment, setNewComment] = useState('')
@@ -10,9 +10,9 @@ function AddNewReview({addReviewToState, user, song, addReviewFromUserState}) {
 
         const newReview = {
             user_id: user.id,
-            song_id: song.id,
+            album_id: album.id,
             user: user,
-            song: song,
+            album: album,
             rating: newRating,
             comment: newComment
         }
@@ -24,7 +24,7 @@ function AddNewReview({addReviewToState, user, song, addReviewFromUserState}) {
             } else if (newReview.user_id == null) {
                 window.alert("Error: Ensure all fields are valid");
                 throw Error(response.statusText)
-            } else if (newReview.song_id == null) {
+            } else if (newReview.album_id == null) {
                 window.alert("Error: Ensure all fields are valid");
                 throw Error(response.statusText)
             }

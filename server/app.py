@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api, bcrypt
-from models import db, User, Song, Review
+from models import db, User, Album, Review
 
 # Views go here!
 app = Flask(__name__)
@@ -23,7 +23,6 @@ migrate = Migrate(app, db)
 
 db.init_app(app)
 api = Api(app)
-
 
 class Home(Resource):
     def get(self):
@@ -44,7 +43,7 @@ class Users(Resource):
     def post(self):
         data = request.get_json()
         try:
-            new_user = User(first_name=data['first_name'], last_name=data['last_name'], user_name=data['user_name'], email=data['email'], password_hash=data['password'])
+            new_user = User(first_name=data['first_name'], last_name=data['last_name'], user_name=data['user_name'], email=data['email'], picture=data['picture'], password_hash=data['password'])
             db.session.add(new_user)
             db.session.commit()
         except:
@@ -94,12 +93,12 @@ class UserByID(Resource):
 
 api.add_resource(UserByID, '/users/<int:id>')
 
-class Songs(Resource):
+class Albums(Resource):
     def get(self):
-        s_list = [s.to_dict() for s in Song.query.all()]
-        return make_response(s_list, 200)
+        a_list = [a.to_dict() for a in Album.query.all()]
+        return make_response(a_list, 200)
     
-api.add_resource(Songs, '/songs')
+api.add_resource(Albums, '/albums')
 
 class Reviews(Resource):
     def get(self):
@@ -107,12 +106,12 @@ class Reviews(Resource):
         return make_response(r_list, 200)
     def post(self):
         data = request.get_json()
-        if data['user_id'] == None or data['song_id'] == None or data['rating'] == None:
+        if data['user_id'] == None or data['album_id'] == None or data['rating'] == None:
             db.session.rollback()
             return make_response({'error': 'All inputs need valid data'}, 422)
         else:
             new_rev = Review(
-                user_id=data['user_id'], song_id=data['song_id'], rating=data['rating'], comment=data['comment'])
+                user_id=data['user_id'], album_id=data['album_id'], rating=data['rating'], comment=data['comment'])
 
             try:
                 db.session.add(new_rev)
@@ -184,7 +183,10 @@ class SignUp(Resource):
     def post(self):
         data = request.get_json()
         try:
-            new_user = User(first_name=data['firstName'], last_name=data['lastName'], user_name=data['username'], email=data['email'], password_hash=data['password'])
+            if data['picture'] == None or data['picture'] == '':
+                new_user = User(first_name=data['firstName'], last_name=data['lastName'], user_name=data['username'], email=data['email'], picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR82DN9JU-hbIhhkPR-AX8KiYzA4fBMVwjLAG82fz7GLg&s", password_hash=data['password'])
+            else:
+                new_user = User(first_name=data['firstName'], last_name=data['lastName'], user_name=data['username'], email=data['email'], picture=data['picture'], password_hash=data['password'])
             db.session.add(new_user)
             db.session.commit()
             session['user_id'] = new_user.id
