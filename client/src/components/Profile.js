@@ -4,7 +4,7 @@ import ReviewCard from "./ReviewCard"
 import ProfileEditForm from "./ProfileEditForm";
 import { UserContext } from "../context/user";
 
-function Profile({onLogout, removeReviewFromState}) {
+function Profile({removeReviewFromState}) {
     const { user, setUser } = useContext(UserContext);
 
     const [editForm, setEditForm] = useState(false)
@@ -12,6 +12,8 @@ function Profile({onLogout, removeReviewFromState}) {
     const onUpdateProfile = (updatedUser) => {
         setUser(updatedUser)
     }
+
+    const onLogout = () => {setUser(null)}
 
     function handleLogout() {
         fetch("/logout", {
