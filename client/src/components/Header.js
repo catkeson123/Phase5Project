@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { UserContext } from "../context/user";
+import gif from "../music.gif"
 
 function Header() {
     const { user, setUser } = useContext(UserContext);
@@ -15,7 +16,9 @@ function Header() {
     
     return (
         <header className='header'>
-            <NavLink className="button" exact to="/">HOME</NavLink>
+            <NavLink exact to="/">
+              <img src={gif} alt='icon' className='icon'/>
+            </NavLink>
             <NavLink className="button" exact to="/albums">ALBUMS</NavLink>
             <NavLink className="button" exact to="/reviews">REVIEWS</NavLink>
             <NavLink className="button" exact to="/users">USERS</NavLink>

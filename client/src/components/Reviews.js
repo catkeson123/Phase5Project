@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function Reviews({reviews}) {
     return (
         <div className='profile'>
-            <h1>Reviews:</h1>
+            <h1 className='labelH1'>Reviews:</h1>
             <div className='reviewList'>
                 {reviews}
             </div>

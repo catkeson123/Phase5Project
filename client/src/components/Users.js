@@ -24,7 +24,7 @@ function Users() {
     
     return (
         <div className='profile'>
-            <h1>Other Users:</h1>
+            <h1 className='labelH1'>Other Users:</h1>
             <div className='userList'>
                 {userCards}
             </div>

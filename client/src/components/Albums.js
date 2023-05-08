@@ -25,7 +25,7 @@ function Albums({addReviewToState}) {
 
     return (
         <div className='profile'>
-            <h1>Available Albums:</h1>
+            <h1 className='labelH1'>Available Albums:</h1>
             <div className="albumList">
                 {albumCards}
             </div>

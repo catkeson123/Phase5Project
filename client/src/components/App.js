@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
+import "../index.css"
 import Home from "./Home";
 import Albums from "./Albums";
 import AlbumCard from "./AlbumCard";

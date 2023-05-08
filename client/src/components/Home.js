@@ -3,6 +3,7 @@ import { UserContext } from "../context/user";
 import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import soundwave from "../soundwave-unscreen.gif"
 
 function Home() {
   const { user, setUser } = useContext(UserContext);
@@ -49,6 +50,7 @@ function Home() {
     return (
       <div>
         <h1 className="home">Welcome to SoundScape, {user.user_name}</h1>
+        <img src={soundwave} alt='soundwave' className="homeImg"/>
       </div>
     );
   }
