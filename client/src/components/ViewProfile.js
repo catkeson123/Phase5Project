@@ -25,16 +25,21 @@ function ViewProfile() {
 
     return (
         <div className='profile'>
+            <h1 className='labelH1'>@{viewUser.user_name}</h1>
+            <br/>
+            <br/>
             <div className='container'>
                 <div className='profileImg' >
                     <img src={viewUser.picture} alt={viewUser.user_name} className='pi'/>
                 </div>
                 <div className='text'>
-                    <h1 className='labelH1'>Full Name: {viewUser.first_name} {viewUser.last_name}</h1>
-                    <h1 className='labelH1'>Username: {viewUser.user_name}</h1>
+                    <h1>Full Name: {viewUser.first_name} {viewUser.last_name}</h1>
                 </div>
             </div>
+            <br/>
+            <br/>
             <h1 className='labelH1'>Reviews:</h1>
+            <br/>
             <div className='reviewList'>
                 {renderReviews}
             </div>

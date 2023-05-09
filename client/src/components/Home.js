@@ -4,6 +4,8 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import soundwave from "../soundwave-unscreen.gif"
+import LogInModal from './LogInModal'
+import SignUpModal from './SignUpModal'
 
 function Home() {
   const { user, setUser } = useContext(UserContext);
@@ -14,9 +16,17 @@ function Home() {
     setSign(!sign);
   };
 
+  const onSignModalClose = () => {
+    setSign(false)
+  }
+
   const handleLogInClick = () => {
     setLog(!log);
   };
+
+  const onLogModalClose = () => {
+    setLog(false)
+  }
 
   const onLogin = (user) => {
     setUser(user);
@@ -27,22 +37,14 @@ function Home() {
       <div>
         <div className="home">
           <h1>Welcome to SoundScape</h1>
-
-          {log ? (
-            <Login onLogin={onLogin} />
-          ) : (
-            <button className="button" onClick={handleLogInClick}>
-              Log In
-            </button>
-          )}
-
-          {sign ? (
-            <SignUp onLogin={onLogin} />
-          ) : (
-            <button className="button" onClick={handleSignUpClick}>
-              Sign Up
-            </button>
-          )}
+          <button className="button" onClick={handleLogInClick}>
+            Log In
+          </button>
+          <LogInModal log={log} onLogModalClose={onLogModalClose} onLogin={onLogin} />
+          <button className="button" onClick={handleSignUpClick}>
+            Sign Up
+          </button>
+          <SignUpModal sign={sign}  onSignModalClose={onSignModalClose} onLogin={onLogin}/>
         </div>
       </div>
     );

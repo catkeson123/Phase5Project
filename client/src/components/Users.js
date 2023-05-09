@@ -22,6 +22,14 @@ function Users() {
         userCards = []
     }
     
+    if (!user) {
+        return (
+            <div className='home'>
+                <h1>Please log in to view other users</h1>
+            </div>
+        )
+    } 
+
     return (
         <div className='profile'>
             <h1 className='labelH1'>Other Users:</h1>

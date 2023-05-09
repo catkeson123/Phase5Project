@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 import "../index.css"
 import Home from "./Home";
@@ -12,6 +12,7 @@ import Users from "./Users";
 import UserCard from "./UserCard";
 import ViewProfile from "./ViewProfile"
 import { UserProvider } from "../context/user";
+
 
 function App() {
 

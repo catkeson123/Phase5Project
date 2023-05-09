@@ -25,7 +25,7 @@ function ReviewCard ({review, removeReviewFromState, removeReviewFromUserState})
                     <h3>Album: {review.album.title} by {review.album.artist}</h3>
                     <h1>Rating: {review.rating}</h1>
                     <h3>Comment: {review.comment}</h3>
-                    <button className="button" onClick = {()=> handleDeleteClick(review.id)}>DELETE REVIEW</button>
+                    <button className="button" onClick = {() =>{if(window.confirm('Are you sure you wish to delete this review?')) handleDeleteClick(review.id)}}>DELETE REVIEW</button>
                 </div>
             </div>
         </div>

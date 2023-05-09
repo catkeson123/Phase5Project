@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
 import ReviewCard from "./ReviewCard"
 import ProfileEditForm from "./ProfileEditForm";
 import { UserContext } from "../context/user";
@@ -36,7 +35,7 @@ function Profile({removeReviewFromState}) {
 
     if (!user) {
         return (
-            <div>
+            <div className='home'>
                 <h1>Please log in to view profile</h1>
             </div>
         )
@@ -46,16 +45,21 @@ function Profile({removeReviewFromState}) {
 
     return(
         <div className='profile'>
+            <h1 className='labelH1'>@{user.user_name}</h1>
+            <br/>
+            <br/>
             <div className='container'>
                 <div className='profileImg' >
                     <img src={user.picture} alt={user.user_name} className='pi'/>
                 </div>
-                <div className='text'>
-                    <h1 className='labelH1'>Full Name: {user.first_name} {user.last_name}</h1>
-                    <h1 className='labelH1'>Username: {user.user_name}</h1>
+                <div className='text'>                   
+                    <h1>Full Name: {user.first_name} {user.last_name}</h1>
                 </div>
             </div>
+            <br/>
+            <br/>
             <h1 className='labelH1'>Your Reviews:</h1>
+            <br/>
             <div className='reviewList'>
                 {renderReviews}
             </div>

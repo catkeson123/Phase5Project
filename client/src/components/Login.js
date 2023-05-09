@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onLogModalClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,6 +15,8 @@ function Login({ onLogin }) {
     })
       .then((r) => r.json())
       .then((user) => onLogin(user));
+
+      onLogModalClose()
   }
   
   
@@ -22,12 +24,14 @@ function Login({ onLogin }) {
       <div className='formDiv'>
         <form onSubmit={handleSubmit}>
         <input
+        className='formInput'
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder='Username'
         />
         <input
+          className='formInput'
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
