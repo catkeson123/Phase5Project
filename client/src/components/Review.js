@@ -1,20 +1,73 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 function Review({review}) {
-    /* add functionality for not having a comment*/
+
+    const[currReview, setCurrReview] = useState(review)
+
+    const updateReview = (rev) => {
+        setCurrReview(rev)
+    }
+
+    const handleLikeClick = () => {
+            fetch(`/reviews/${review.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: currReview.user_id,
+                    album_id: currReview.album_id,
+                    rating: currReview.rating,
+                    comment: currReview.comment,
+                    likes: currReview.likes + 1,
+                })
+            })
+                .then(r => r.json())
+                .then(rev => updateReview(rev))
+        }
+
+    const handleDislikeClick = () => {
+        if (currReview.likes > 0) {
+            fetch(`/reviews/${review.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: currReview.user_id,
+                    album_id: currReview.album_id,
+                    rating: currReview.rating,
+                    comment: currReview.comment,
+                    likes: currReview.likes - 1,
+                })
+            })
+                .then(r => r.json())
+                .then(rev => updateReview(rev))
+        }
+    }
+    
+    let showComment = false
+
+    if (currReview.comment == null){
+        showComment = true
+    } else if (currReview.comment === ''){
+        showComment = true
+    }
 
     return (
         <div className='reviewCard'>
             <div className='container'>
                 <div className='profileImg' >
-                    <img src={review.album.image} alt={review.album.title} className='reviewImg' />
+                    <img src={currReview.album.image} alt={currReview.album.title} className='reviewImg' />
                 </div>
                 <div className='text'>
-                    <h3>Album: {review.album.title} by {review.album.artist}</h3>
-                    <h3>Review by: {review.user.user_name}</h3>
-                    <h1>Rating: {review.rating}</h1>
-                    <h3>Comment: {review.comment}</h3>
-                </div>
+                    <h3>{currReview.album.title} by {currReview.album.artist}</h3>
+                    <h3>Review by: {currReview.user.user_name}</h3>
+                    <h1>Rating: {currReview.rating}</h1>
+                    <h3>{showComment ? '' : `"${currReview.comment}"`}</h3>
+                    <div className='likeDiv'>
+                        <button onClick={ handleLikeClick } className="likeButton">☺</button>
+                        <button onClick={ handleDislikeClick } className="likeButton">☹</button>
+                        <h4 className='like'>{currReview.likes} {currReview.likes === 1 ? 'like' : 'likes'}</h4>
+                    </div>
+                    
+                </div>      
             </div>
         </div>
     )

@@ -111,7 +111,7 @@ class Reviews(Resource):
             return make_response({'error': 'All inputs need valid data'}, 422)
         else:
             new_rev = Review(
-                user_id=data['user_id'], album_id=data['album_id'], rating=data['rating'], comment=data['comment'])
+                user_id=data['user_id'], album_id=data['album_id'], rating=data['rating'], comment=data['comment'], likes = 0)
 
             try:
                 db.session.add(new_rev)

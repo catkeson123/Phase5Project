@@ -23,7 +23,7 @@ function AlbumCard({album, addReviewToState, user, addReviewFromUserState}) {
                 </div>
                 <div className='text'>
                     <h2>{album.title}</h2>
-                    <h3>Artist: {album.artist}</h3>
+                    <h3>{album.artist}</h3>
                     <h3>Released: {album.release}</h3>
                     {user ? <button className='button' onClick={handleClick}>Review Album</button> : <div></div>}
                 </div>

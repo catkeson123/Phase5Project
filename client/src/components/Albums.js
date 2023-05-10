@@ -31,6 +31,7 @@ function Albums({addReviewToState}) {
     });
 
     const [sortState, setSortState] = useState("none");
+    const [filterState, setFilterState] = useState("none")
 
     const sortMethods = {
         none: { method: (a, b) => null },
@@ -39,27 +40,49 @@ function Albums({addReviewToState}) {
         descending: { method: (a, b) => (a.release > b.release ? -1 : 1) },
     };
 
-    let albumCards = searchedAlbums.sort(sortMethods[sortState].method).map((album) => <AlbumCard key={album.id} addReviewToState={addReviewToState} user={user} album={album} addReviewFromUserState={addReviewFromUserState}/>);
+    let filterAlbums = searchedAlbums.sort(sortMethods[sortState].method).filter((a) => {
+        return a.genre === filterState
+    } )
+
+    if (filterState === 'none') {
+        filterAlbums = searchedAlbums.sort(sortMethods[sortState].method)
+    }
+
+    let albumCards = filterAlbums.map((album) => <AlbumCard key={album.id} addReviewToState={addReviewToState} user={user} album={album} addReviewFromUserState={addReviewFromUserState}/>);
     
     return (
         <div className='profile'>
             <h1 className='labelH1'>Available Albums:</h1> 
             <br/>
             <br/>
-            <form>
-                <label for='filter' className="selectLabel">Filter By:</label>
-                <select defaultValue={'DEFAULT'} onChange={(e) => setSortState(e.target.value)} className="selectBox">
-                    <option value="none">None</option>
-                    <option value="title">Title</option>
-                    <option value="ascending">Earliest Release</option>
-                    <option value="descending">Latest Release</option>
-                    <option value="none" className='genre' disabled>GENRES:</option>
-                </select>
-            </form>
+            <div className='likeDiv'>
+                <form>
+                    <label for='filter' className="selectLabel">Genre:</label>
+                    <select defaultValue={'DEFAULT'} onChange={(e) => setFilterState(e.target.value)} className="selectBox">
+                        <option value="none">None</option>
+                        <option value="Hard Rock">Hard Rock</option>
+                        <option value="Soft Rock">Soft Rock</option>
+                        <option value="Hip Hop">Hip Hop</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Indie">Indie</option>
+                        <option value="Country">Country</option>
+                    </select>
+                </form>
+                <form>
+                    <label for='filter' className="selectLabel">Sort By:</label>
+                    <select defaultValue={'DEFAULT'} onChange={(e) => setSortState(e.target.value)} className="selectBox">
+                        <option value="none">None</option>
+                        <option value="title">Title</option>
+                        <option value="ascending">Earliest Release</option>
+                        <option value="descending">Latest Release</option>
+                    </select>
+                </form>
+            </div>
+            
             <br/>
             <br/>
             <Search updateSearch={updateSearch} />
-            <br/>
+          <br/>
             <br/>
             <div className="albumList">
                 {albumCards}

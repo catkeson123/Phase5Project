@@ -4,7 +4,7 @@
 
 
 body {
-	background: linear-gradient(-45deg, #000000, #333333, #5e6298, #323d73);
+	background: linear-gradient(90deg, #000000, #333333, #5e6298, #323d73);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	height: 100vh;
@@ -53,6 +53,11 @@ body {
 .button:hover {
     background-color: white;
     color: black
+}
+
+.likeButton:hover {
+  background-color: white;
+  color: black
 }
 
 .header {
@@ -165,7 +170,7 @@ body {
 }
 
 .formDiv {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: center;
     /* margin-left: 500px;
@@ -195,7 +200,7 @@ body {
 }
 
 form {
-    display: grid;
+    display: inline-flex;
     flex-direction: column;
     justify-content: center;
     justify-self: center;
@@ -215,7 +220,7 @@ form {
 .container {
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
   }
   
 .profileImg {
@@ -416,3 +421,40 @@ form {
     color:white;
     background-color:black
   }
+
+  .like {
+    text-align: right;
+    padding: 10px;
+    margin: 0;
+  }
+
+  .likeButton {
+    padding: 0.5em 1.5em;
+    border-radius: 25px;
+    color: white;
+    background: none;
+    max-width: 100px;
+    max-height: 100px;
+    font-size: 1.1em;
+    border: 2px solid white;
+    cursor: pointer;
+    margin: 15px;
+    margin-top: 10px;
+    font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+    font-weight: lighter;
+    text-decoration: none;
+    text-align: center;
+    align-items: center;
+    margin-right: 5px;
+    justify-content: center;
+    font-weight: bold;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    /* margin: auto; */
+  }
+
+  .likeDiv {
+    align-items: center;
+    display: inline-flex;
+  }
+
+  
