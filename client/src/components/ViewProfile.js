@@ -25,9 +25,6 @@ function ViewProfile() {
 
     return (
         <div className='profile'>
-            <h1 className='labelH1'>@{viewUser.user_name}</h1>
-            <br/>
-            <br/>
             <div className='container'>
                 <div className='profileImg' >
                     <img src={viewUser.picture} alt={viewUser.user_name} className='pi'/>
@@ -36,6 +33,9 @@ function ViewProfile() {
                     <h1>Full Name: {viewUser.first_name} {viewUser.last_name}</h1>
                 </div>
             </div>
+            <br/>
+            <br/>
+            <h1 className='labelH1'>@{viewUser.user_name}</h1>
             <br/>
             <br/>
             <h1 className='labelH1'>Reviews:</h1>

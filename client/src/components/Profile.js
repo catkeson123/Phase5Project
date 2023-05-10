@@ -50,9 +50,7 @@ function Profile({removeReviewFromState}) {
 
     return(
         <div className='profile'>
-            <h1 className='labelH1'>@{user.user_name}</h1>
-            <br/>
-            <br/>
+            
             <div className='container'>
                 <div className='profileImg' >
                     <img src={user.picture} alt={user.user_name} className='pi'/>
@@ -61,6 +59,9 @@ function Profile({removeReviewFromState}) {
                     <h1>Full Name: {user.first_name} {user.last_name}</h1>
                 </div>
             </div>
+            <br/>
+            <br/>
+            <h1 className='labelH1'>@{user.user_name}</h1>
             <br/>
             <br/>
             <h1 className='labelH1'>Your Reviews:</h1>
