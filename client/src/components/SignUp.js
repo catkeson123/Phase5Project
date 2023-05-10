@@ -69,7 +69,7 @@ function SignUp({ onLogin, onSignModalClose }) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder='Password'
           />
-          <button className='button' type="submit">Sign Up!</button>
+          <button className='modal-button' type="submit">Sign Up!</button>
         </form>
         </div>
         

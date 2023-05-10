@@ -37,7 +37,7 @@ function Login({ onLogin, onLogModalClose }) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'
         />
-        <button className='button' type="submit">Login</button>
+        <button className='modal-button' type="submit">Login</button>
       </form>
       </div>
       

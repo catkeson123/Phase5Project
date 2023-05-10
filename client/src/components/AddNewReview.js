@@ -56,7 +56,7 @@ function AddNewReview({addReviewToState, user, album, addReviewFromUserState, on
                     <label className="formLabel" for="rating"> Enter your rating: </label>
                     <input className='formInput' onChange={(e) => setNewRating(parseInt(e.target.value))} type="number" min='1' max='5' name="rating" />
                     <label className="formLabel" for="comment"> Enter your comment: </label>
-                    <input className='formInput' onChange={(e) => setNewComment(e.target.value)} type="text" name="comment" placeholder="Optional"/>
+                    <textarea className='formInput' onChange={(e) => setNewComment(e.target.value)} type="text" name="comment" placeholder="Optional"/>
                     <button className="modal-button" type="submit">Submit New Review</button>
                 </form>
             </div>

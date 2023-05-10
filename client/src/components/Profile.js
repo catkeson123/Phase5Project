@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import ReviewCard from "./ReviewCard"
 import ProfileEditForm from "./ProfileEditForm";
 import { UserContext } from "../context/user";
+import ProfileEditModal from './ProfileEditModal'
 
 function Profile({removeReviewFromState}) {
     const { user, setUser } = useContext(UserContext);
 
-    const [editForm, setEditForm] = useState(false)
+    const [editModal, setEditModal] = useState(false)
     
     const onUpdateProfile = (updatedUser) => {
         setUser(updatedUser)
@@ -21,7 +22,11 @@ function Profile({removeReviewFromState}) {
     }
 
     const handleClick = () => {
-        setEditForm(!editForm)
+        setEditModal(!editModal)
+    }
+
+    const onEditModalClose = () => {
+        setEditModal(false)
     }
 
     const removeReviewFromUserState = (doomedReviewId) => {
@@ -64,7 +69,7 @@ function Profile({removeReviewFromState}) {
                 {renderReviews}
             </div>
             <button className="button" onClick={handleClick}>EDIT PROFILE</button>
-            {editForm? <ProfileEditForm onUpdateProfile={onUpdateProfile} user={user}/> : <div></div>}
+            <ProfileEditModal editModal={editModal} onEditModalClose={onEditModalClose} user={user} onUpdateProfile={onUpdateProfile}/>
             <button className="button" onClick={handleLogout}>LOGOUT</button>
         </div>
     )
