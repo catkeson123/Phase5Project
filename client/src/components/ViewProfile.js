@@ -35,7 +35,7 @@ function ViewProfile() {
             </div>
             <br/>
             <br/>
-            <h1 className='labelH1'>@{viewUser.user_name}</h1>
+            <h1 className='unLabelH1'>@{viewUser.user_name}</h1>
             <br/>
             <br/>
             <h1 className='labelH1'>Reviews:</h1>

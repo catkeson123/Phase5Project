@@ -61,7 +61,7 @@ function Profile({removeReviewFromState}) {
             </div>
             <br/>
             <br/>
-            <h1 className='labelH1'>@{user.user_name}</h1>
+            <h1 className='unLabelH1'>@{user.user_name}</h1>
             <br/>
             <br/>
             <h1 className='labelH1'>Your Reviews:</h1>

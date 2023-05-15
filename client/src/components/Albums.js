@@ -52,7 +52,7 @@ function Albums({addReviewToState}) {
     
     return (
         <div className='profile'>
-            <h1 className='labelH1'>Available Albums:</h1> 
+            <h1 className='labelH1'>Albums:</h1> 
             <br/>
             <br/>
             <div className='likeDiv'>
