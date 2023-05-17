@@ -33,9 +33,9 @@ The users page display links to other users' profile pages. This page cannot be 
 The profile page displays a user's name, username, and reviews. Users can delete reviews from their profile and edit information in their profile. 
 
 # MODELS
-The models file contains the following three models which constitute the framework for our database tables.
+The models file contains the following three models which constitute the framework for the database tables.
 
-Each table in our database contains a primary key represented by an id.
+Each table in the database contains a primary key column represented by an id.
 
 The individual properties of each table are listed below:
 
