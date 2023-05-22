@@ -41,24 +41,37 @@ The individual properties of each table are listed below:
 
 ## User
 first_name: The user's first name represented as a string.
+
 last_name: The user's last name represented as a string.
+
 user_name: The user's username represented as a string.
+
 email: The user's email represented as a string.
+
 picture: The url of the user's profile picture represented as a string.
+
 _password_hash: The password hash for the user.
 
 ## Album
 title: The album title represented as a string.
+
 artist: The album artist represented as a string.
+
 release: The album release represented as a string.
+
 genre: The album genre represented as a string.
+
 image: The album image url represented as a string.
 
 ## Review
 rating: The rating of the review represented as a string.
+
 comment: The comment of the review represented as a string.
+
 album_id: A foreign key representing the id of the album associated with the review.
+
 user_id: A foreign key representing the id of the user associated with the review.
+
 likes: The number of likes the review has represented as an integer.
 
 Users can have many reviews. Albums can have many reviews. A Review belongs to one User and one Album.
