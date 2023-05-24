@@ -30,7 +30,7 @@ function ReviewCard ({review, removeReviewFromState, removeReviewFromUserState})
                     <img src={review.album.image} alt={review.album.title} className='reviewImg'/>
                 </div>
                 <div className='text'>
-                    <h3>Album: {review.album.title} by {review.album.artist}</h3>
+                    <h2>Album: {review.album.title} by {review.album.artist}</h2>
                     <h1>Rating: {review.rating}</h1>
                     <h3>{showComment ? '' : `"${review.comment}"`}</h3>
                     <h4>Likes: {review.likes}</h4>
