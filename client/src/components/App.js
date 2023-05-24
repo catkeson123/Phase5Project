@@ -34,8 +34,6 @@ function App() {
   }))
   }
 
-  let displayReviews = reviews.map((review) => <Review key={review.id} review={review} />);
-
   return (
     <div>
         <UserProvider>
@@ -51,7 +49,7 @@ function App() {
                     <Albums addReviewToState={addReviewToState}/>
                 </Route>
                 <Route exact path="/reviews">
-                    <Reviews reviews={displayReviews}/>
+                    <Reviews reviews={reviews}/>
                 </Route>
                 <Route exact path="/users">
                     <Users/>

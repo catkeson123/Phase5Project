@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { NavLink } from 'react-router-dom'
 
 function Review({review}) {
 
@@ -58,7 +59,7 @@ function Review({review}) {
                 </div>
                 <div className='text'>
                     <h3>{currReview.album.title} by {currReview.album.artist}</h3>
-                    <h3>Review by: {currReview.user.user_name}</h3>
+                    <NavLink exact to={`/users/${review.user_id}`} className='button'>Review by: {currReview.user.user_name}</NavLink>
                     <h1>Rating: {currReview.rating}</h1>
                     <h3>{showComment ? '' : `"${currReview.comment}"`}</h3>
                     <div className='likeDiv'>

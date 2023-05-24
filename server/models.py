@@ -15,10 +15,15 @@ metadata = MetaData(naming_convention={
 
 db = SQLAlchemy(metadata=metadata)
 
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('users.id'))
+)
+
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    serialize_rules = ('-albums','-reviews.user')
+    serialize_rules = ('-albums','-reviews.user', '-followers')
 
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String)
@@ -29,7 +34,11 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String, nullable=False)
 
     reviews = db.relationship('Review', backref='user', cascade='all, delete-orphan')
-    # liked_reviews = db
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
     albums = association_proxy('reviews', 'album')
 
     @hybrid_property
@@ -51,6 +60,46 @@ class User(db.Model, SerializerMixin):
         if '@' not in email:
             raise ValueError('Must be a valid email address')
         return email
+    
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+    
+    def followed_reviews(self):
+        return Review.query.join(
+            followers, (followers.c.followed_id == Review.user_id)).filter(
+                followers.c.follower_id == self.id)
+    
+    def user_dict(self):
+        return {
+            "id": self.id,
+            "username": self.user_name,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "picture": self.picture,
+            # "favorites": [fav.to_dict() for fav in self.favorites],
+            "followers": [follower.follower_dict() for follower in self.followers],
+            "followed": [followed.follower_dict() for followed in self.followed]
+        }
+    
+    def follower_dict(self):
+        return {
+            "id": self.id,
+            "username": self.user_name,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "picture": self.picture,
+        }
 
 class Album(db.Model, SerializerMixin):
     __tablename__ = 'albums'
@@ -84,3 +133,4 @@ class Review(db.Model, SerializerMixin):
         if rt < 1 or rt > 5 or type(rt) != int:
             raise ValueError('Rating must be a number between 1 and 5')
         return rt
+

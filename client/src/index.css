@@ -50,6 +50,25 @@ body {
     transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 
+.button-active {
+  padding: 0.5em 1.5em;
+  border-radius: 8px;
+  color: black;
+  background-color: #ffffff;
+  background: none;
+  max-width: 300px;
+  font-size: 1.1em;
+  border: 2px solid black;
+  cursor: pointer;
+  margin: 15px;
+  margin-top: 10px;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+  font-weight: lighter;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
 .button:hover {
     background-color: white;
     color: black
@@ -235,6 +254,7 @@ form {
 .text {
     font-size: 20px;
     padding-left: 20px;
+    justify-content: left;
   }
 
 .homeImg {

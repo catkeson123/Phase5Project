@@ -57,7 +57,7 @@ function Albums({addReviewToState}) {
             <br/>
             <div className='likeDiv'>
                 <form>
-                    <label for='filter' className="selectLabel">Genre:</label>
+                    <label htmlFor='filter' className="selectLabel">Genre:</label>
                     <select defaultValue={'DEFAULT'} onChange={(e) => setFilterState(e.target.value)} className="selectBox">
                         <option value="none">None</option>
                         <option value="Hard Rock">Hard Rock</option>
@@ -69,7 +69,7 @@ function Albums({addReviewToState}) {
                     </select>
                 </form>
                 <form>
-                    <label for='filter' className="selectLabel">Sort By:</label>
+                    <label htmlFor='filter' className="selectLabel">Sort By:</label>
                     <select defaultValue={'DEFAULT'} onChange={(e) => setSortState(e.target.value)} className="selectBox">
                         <option value="none">None</option>
                         <option value="title">Title</option>

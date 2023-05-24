@@ -210,11 +210,75 @@ api.add_resource(CheckSession, '/check_session')
 
 class Logout(Resource):
 
-    def delete(self): # just add this line!
+    def delete(self):
         session['user_id'] = None
         return {'message': '204: No Content'}, 204
 
 api.add_resource(Logout, '/logout')
+
+# class Follow(Resource):
+#     def post(self, id):
+#         if session['user_id']:
+#             curr_user = User.query.filter(User.id == session.get('user_id')).first()
+#         user = User.query.filter_by(id=id).first()
+#         if user is None:
+#             return make_response({'error': 'User not found'}, 404)
+#         curr_user.follow(user)
+#         db.session.commit()
+
+# api.add_resource(Follow, '/follow/<int:id>')
+
+class FollowById(Resource):
+    def post(self, id):
+
+        user_to_follow = User.query.filter_by(id = id).first()
+        current_user = User.query.filter(User.id == session.get('user_id')).first()
+
+        if not current_user.is_following(user_to_follow):
+            current_user.followed.append(user_to_follow)
+            db.session.commit()
+            return make_response(user_to_follow.user_dict(), 201)
+        else:
+            return make_response({'message': 'You are already following this user.'}, 201)
+
+api.add_resource(FollowById, '/follow/<int:id>')
+
+# class Unfollow(Resource):
+#     def post(self, id):
+#         if session['user_id']:
+#             curr_user = User.query.filter(User.id == session.get('user_id')).first()
+#         user = User.query.filter_by(id=id).first()
+#         if user is None:
+#             return make_response({'error': 'User not found'}, 404)
+#         curr_user.unfollow(user)
+#         db.session.commit()
+
+# api.add_resource(Unfollow, '/unfollow/<int:id>')
+
+class UnfollowById(Resource):
+    def delete(self, id):
+
+        current_user = User.query.filter(User.id == session.get('user_id')).first()
+        followed_user = User.query.filter_by(id = id).first()
+
+        current_user.unfollow(followed_user)
+        db.session.commit()
+
+        return make_response({'message': 'User Unfollowed'}, 200)
+    
+api.add_resource(UnfollowById, '/unfollow/<int:id>')
+
+class CheckFollowById(Resource):
+    def get(self, id):
+        current_user = User.query.filter(User.id == session.get('user_id')).first()
+        checking_user = User.query.filter_by(id = id).first()
+
+        if current_user.is_following(checking_user):
+            return make_response(jsonify({'following': True}), 200)
+        else:
+            return make_response(jsonify({'following': False}), 200)
+
+api.add_resource(CheckFollowById, '/check/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

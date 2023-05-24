@@ -45,17 +45,17 @@ function ProfileEditForm({ onUpdateProfile, user, onEditModalClose}) {
         <div>
             <div className="formDiv">
                 <form onSubmit={handleSubmit} >
-                    <label className='formLabel' for="name"> Enter New First Name: </label>
+                    <label className='formLabel' htmlFor="name"> Enter New First Name: </label>
                     <input className='formInput' onChange={handleChange} type="text" name="first_name" value={first_name} />
-                    <label className='formLabel' for="last_name"> Enter New Last Name: </label>
+                    <label className='formLabel' htmlFor="last_name"> Enter New Last Name: </label>
                     <input className='formInput' onChange={handleChange} type="text" name="last_name" value={last_name} />
-                    <label className='formLabel' for="user_name"> Enter New Username: </label>
+                    <label className='formLabel' htmlFor="user_name"> Enter New Username: </label>
                     <input className='formInput' onChange={handleChange} type="text" name="user_name" value={user_name} />
-                    <label className='formLabel' for="email"> Enter New Email: </label>
+                    <label className='formLabel' htmlFor="email"> Enter New Email: </label>
                     <input className='formInput' onChange={handleChange} type="text" name="email" value={email}/>
-                    <label className='formLabel' for="picture"> Enter New Profile Picture URL: </label>
+                    <label className='formLabel' htmlFor="picture"> Enter New Profile Picture URL: </label>
                     <input className='formInput' onChange={handleChange} type="text" name="picture" value={picture}/>
-                    <label className='formLabel' for="password_hash"> Enter New Password: </label>
+                    <label className='formLabel' htmlFor="password_hash"> Enter New Password: </label>
                     <input className='formInput' onChange={handleChange} type="text" name="password_hash" value={password_hash}/>
                     <button className="modal-button" type="submit">Submit</button>
                 </form>
