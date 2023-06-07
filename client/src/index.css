@@ -79,6 +79,29 @@ body {
   color: black
 }
 
+.likeButton-active {
+    padding: 0.5em 1.5em;
+    border-radius: 25px;
+    color: black;
+    background-color: white;
+    max-width: 100px;
+    max-height: 100px;
+    font-size: 1.1em;
+    border: 2px solid white;
+    cursor: pointer;
+    margin: 15px;
+    margin-top: 10px;
+    font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+    font-weight: lighter;
+    text-decoration: none;
+    text-align: center;
+    align-items: center;
+    margin-right: 5px;
+    justify-content: center;
+    font-weight: bold;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
 .header {
     display: flex;
     flex-direction: row;

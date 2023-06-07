@@ -38,7 +38,12 @@ def check_if_logged_in():
 
 class Users(Resource):
     def get(self):
-        u_list = [u.to_dict() for u in User.query.all()]
+        u_list = [u.user_dict() for u in User.query.all()]
+        # users =User.query.all()
+        # u_list=[]
+        # for user in users:
+        #     u=user.user_dict()
+        #     u_list.append(u)
         return make_response(u_list, 200)
     def post(self):
         data = request.get_json()
@@ -49,7 +54,7 @@ class Users(Resource):
         except:
             return make_response({'error': 'All inputs need valid data'}, 422)
         
-        return make_response(new_user.to_dict(), 201)
+        return make_response(new_user.user_dict(), 201)
     
 api.add_resource(Users, '/users', endpoint='users')
 
@@ -58,7 +63,7 @@ class UserByID(Resource):
         u = User.query.filter_by(id=id).first()
         if u == None:
             return make_response({'error': 'User not found'}, 404) 
-        return make_response(u.to_dict(), 200)
+        return make_response(u.user_dict(), 200)
     
     def patch(self, id):
         data = request.get_json()
@@ -76,7 +81,7 @@ class UserByID(Resource):
             db.session.rollback()
             return make_response({'error': 'validation errors'}, 422)
 
-        response_dict = user.to_dict()
+        response_dict = user.user_dict()
 
         response = make_response(response_dict, 200)
 
@@ -102,7 +107,7 @@ api.add_resource(Albums, '/albums')
 
 class Reviews(Resource):
     def get(self):
-        r_list = [r.to_dict() for r in Review.query.all()]
+        r_list = [r.review_dict() for r in Review.query.all()]
         return make_response(r_list, 200)
     def post(self):
         data = request.get_json()
@@ -111,7 +116,7 @@ class Reviews(Resource):
             return make_response({'error': 'All inputs need valid data'}, 422)
         else:
             new_rev = Review(
-                user_id=data['user_id'], album_id=data['album_id'], rating=data['rating'], comment=data['comment'], likes = 0)
+                user_id=data['user_id'], album_id=data['album_id'], rating=data['rating'], comment=data['comment'])
 
             try:
                 db.session.add(new_rev)
@@ -120,7 +125,7 @@ class Reviews(Resource):
                 db.session.rollback()
                 return make_response({'error': 'All inputs need valid data'}, 422)
 
-            rev_dict = new_rev.to_dict()
+            rev_dict = new_rev.review_dict()
             return make_response(rev_dict, 201)
 
 api.add_resource(Reviews, '/reviews', endpoint='reviews')
@@ -142,7 +147,7 @@ class ReviewByID(Resource):
             db.session.rollback()
             return make_response({'error': 'validation errors'}, 422)
 
-        response_dict = rev.to_dict()
+        response_dict = rev.review_dict()
 
         response = make_response(response_dict, 200)
 
@@ -172,7 +177,7 @@ class Login(Resource):
 
         if user.authenticate(password):
             session['user_id'] = user.id
-            return user.to_dict(), 200
+            return user.user_dict(), 200
 
         return {'error': 'Invalid username or password'}, 401
 
@@ -193,7 +198,7 @@ class SignUp(Resource):
         except:
             return make_response({'error': 'All inputs need valid data'}, 422)
         
-        return make_response(new_user.to_dict(), 201)
+        return make_response(new_user.user_dict(), 201)
     
 api.add_resource(SignUp, '/signup')
 
@@ -202,7 +207,7 @@ class CheckSession(Resource):
     def get(self):
         user = User.query.filter(User.id == session.get('user_id')).first()
         if user:
-            return user.to_dict()
+            return user.user_dict()
         else:
             return {'message': '401: Not Authorized'}, 401
 
@@ -279,6 +284,46 @@ class CheckFollowById(Resource):
             return make_response(jsonify({'following': False}), 200)
 
 api.add_resource(CheckFollowById, '/check/<int:id>')
+
+class LikeById(Resource):
+    def post(self, id):
+
+        review = Review.query.filter_by(id = id).first()
+        current_user = User.query.filter(User.id == session.get('user_id')).first()
+
+        if not current_user.has_liked_review(review):
+            current_user.like_review(review)
+            db.session.commit()
+            return make_response(review.review_dict(), 201)
+        else:
+            return make_response({'message': 'You have already liked this review.'}, 201)
+        
+api.add_resource(LikeById, '/like/<int:id>')
+
+class UnlikeById(Resource):
+    def delete(self, id):
+
+        current_user = User.query.filter(User.id == session.get('user_id')).first()
+        review = Review.query.filter_by(id = id).first()
+
+        current_user.unlike_review(review)
+        db.session.commit()
+
+        return make_response({'message': 'Review Unliked'}, 200)
+    
+api.add_resource(UnlikeById, '/unlike/<int:id>')
+
+class CheckLikeById(Resource):
+    def get(self, id):
+        current_user = User.query.filter(User.id == session.get('user_id')).first()
+        review = Review.query.filter_by(id = id).first()
+
+        if current_user.has_liked_review(review):
+            return make_response(jsonify({'liked': True}), 200)
+        else:
+            return make_response(jsonify({'liked': False}), 200)
+
+api.add_resource(CheckLikeById, '/checklike/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Switch, Route } from "react-router-dom";
-import "../index.css"
+import "../index.css";
 import Home from "./Home";
 import Albums from "./Albums";
 import AlbumCard from "./AlbumCard";
@@ -10,55 +10,60 @@ import Reviews from "./Reviews";
 import Review from "./Review";
 import Users from "./Users";
 import UserCard from "./UserCard";
-import ViewProfile from "./ViewProfile"
+import ViewProfile from "./ViewProfile";
 import { UserProvider } from "../context/user";
 
-
 function App() {
-
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-      fetch("/reviews")
-          .then((r) => r.json())
-          .then(setReviews);
-      }, []);
-
-  const addReviewToState = newReview => {
-  setReviews([...reviews, newReview])
-  }
+    fetchReviews();
+  }, []);
+  const fetchReviews = () => {
+    fetch("/reviews")
+      .then((r) => r.json())
+      .then((data) => {
+        console.log("REVIEWS:", data);
+        setReviews(data);
+      });
+  };
+  const addReviewToState = (newReview) => {
+    setReviews([...reviews, newReview]);
+  };
 
   const removeReviewFromState = (deleteID) => {
-  setReviews(reviews => reviews.filter(review => {
-      return review.id !== deleteID
-  }))
-  }
+    setReviews((reviews) =>
+      reviews.filter((review) => {
+        return review.id !== deleteID;
+      })
+    );
+  };
 
   return (
     <div>
-        <UserProvider>
-            <Header />
-            <Route exact path='/users/:id'>
-                <ViewProfile />
-            </Route>
-            <Switch>
-                <Route exact path="/">
-                    <Home/>
-                </Route>
-                <Route exact path="/albums">
-                    <Albums addReviewToState={addReviewToState}/>
-                </Route>
-                <Route exact path="/reviews">
-                    <Reviews reviews={reviews}/>
-                </Route>
-                <Route exact path="/users">
-                    <Users/>
-                </Route>
-                <Route path="/profile">
-                    <Profile removeReviewFromState={removeReviewFromState}/>
-                </Route>
-            </Switch>
-        </UserProvider>
+      <UserProvider>
+        <Header />
+        <Route exact path="/users/:id">
+          <ViewProfile />
+        </Route>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/albums">
+            <Albums addReviewToState={addReviewToState} />
+          </Route>
+          <Route exact path="/reviews">
+            <Reviews reviews={reviews} />
+          </Route>
+          <Route exact path="/users">
+            <Users />
+          </Route>
+          <Route path="/profile">
+            <Profile removeReviewFromState={removeReviewFromState} />
+          </Route>
+        </Switch>
+      </UserProvider>
     </div>
   );
 }

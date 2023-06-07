@@ -1,48 +1,52 @@
-import React, {useState} from 'react'
-import { NavLink } from 'react-router-dom'
+import React, {useState, useEffect, useContext} from 'react'
+import { NavLink, useParams } from 'react-router-dom'
+import { UserContext } from "../context/user";
 
 function Review({review}) {
 
+    const { user, setUser } = useContext(UserContext);
     const[currReview, setCurrReview] = useState(review)
+    const[liked, setLiked] = useState(false)
+
+    const { id } = useParams()
+
+    useEffect(() => {
+        fetch(`/checklike/${review.id}`)
+        .then((res) => {
+            if (res.ok) {
+                res.json().then((r) => {
+                    setLiked(r.liked)
+                })
+            }
+        })
+    }, [review.id, user])
 
     const updateReview = (rev) => {
         setCurrReview(rev)
     }
 
     const handleLikeClick = () => {
-            fetch(`/reviews/${review.id}`, {
-                method: 'PATCH',
+        if (liked) {
+            fetch(`/unlike/${review.id}`, {
+                method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: currReview.user_id,
-                    album_id: currReview.album_id,
-                    rating: currReview.rating,
-                    comment: currReview.comment,
-                    likes: currReview.likes + 1,
-                })
             })
-                .then(r => r.json())
-                .then(rev => updateReview(rev))
-        }
-
-    const handleDislikeClick = () => {
-        if (currReview.likes > 0) {
-            fetch(`/reviews/${review.id}`, {
-                method: 'PATCH',
+            .then(r => r.json)
+            .then(() => {
+                setLiked(false)
+            })
+        } else {
+            fetch(`/like/${review.id}`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: currReview.user_id,
-                    album_id: currReview.album_id,
-                    rating: currReview.rating,
-                    comment: currReview.comment,
-                    likes: currReview.likes - 1,
-                })
             })
-                .then(r => r.json())
-                .then(rev => updateReview(rev))
+            .then(r => r.json)
+            .then(() => {
+                setLiked(true)
+            })
         }
     }
-    
+
     let showComment = false
 
     if (currReview.comment == null){
@@ -63,9 +67,8 @@ function Review({review}) {
                     <h1>Rating: {currReview.rating}</h1>
                     <h3>{showComment ? '' : `"${currReview.comment}"`}</h3>
                     <div className='likeDiv'>
-                        <button onClick={ handleLikeClick } className="likeButton">☺</button>
-                        <button onClick={ handleDislikeClick } className="likeButton">☹</button>
-                        <h4 className='like'>{currReview.likes} {currReview.likes === 1 ? 'like' : 'likes'}</h4>
+                        <button onClick={ handleLikeClick } className={liked ? "likeButton-active": "likeButton"}>{liked ? '☹' : '☺'}</button>
+                        <h4 className='like'>{review.likes} {review.likes == 1 ? 'like' : 'likes'}</h4>
                     </div>
                     
                 </div>      

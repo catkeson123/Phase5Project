@@ -11,7 +11,6 @@ function AlbumCard({album, addReviewToState, user, addReviewFromUserState}) {
 
     const handleClick = () => {
         setShowModal(true)
-        console.log(album)
     }
 
     return (

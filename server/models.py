@@ -78,17 +78,24 @@ class User(db.Model, SerializerMixin):
             followers, (followers.c.followed_id == Review.user_id)).filter(
                 followers.c.follower_id == self.id)
     
+    def liked_reviews(self):
+        l_list = []
+        for like in self.liked:
+            l_list.append(like.review_id)
+        return l_list
+
     def user_dict(self):
         return {
             "id": self.id,
-            "username": self.user_name,
+            "user_name": self.user_name,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "email": self.email,
             "picture": self.picture,
-            # "favorites": [fav.to_dict() for fav in self.favorites],
+            "likes": self.liked_reviews(),
             "followers": [follower.follower_dict() for follower in self.followers],
-            "followed": [followed.follower_dict() for followed in self.followed]
+            "followed": [followed.follower_dict() for followed in self.followed],
+            "reviews":[review.review_dict() for review in self.reviews]
         }
     
     def follower_dict(self):
@@ -100,6 +107,27 @@ class User(db.Model, SerializerMixin):
             "email": self.email,
             "picture": self.picture,
         }
+    
+    liked = db.relationship(
+        'ReviewLike',
+        foreign_keys='ReviewLike.user_id',
+        backref='user', lazy='dynamic')
+
+    def like_review(self, review):
+        if not self.has_liked_review(review):
+            like = ReviewLike(user_id=self.id, review_id=review.id)
+            db.session.add(like)
+
+    def unlike_review(self, review):
+        if self.has_liked_review(review):
+            ReviewLike.query.filter_by(
+                user_id=self.id,
+                review_id=review.id).delete()
+
+    def has_liked_review(self, review):
+        return ReviewLike.query.filter(
+            ReviewLike.user_id == self.id,
+            ReviewLike.review_id == review.id).count() > 0
 
 class Album(db.Model, SerializerMixin):
     __tablename__ = 'albums'
@@ -119,18 +147,43 @@ class Album(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
 
-    serialize_rules = ('-user.reviews', '-album.reviews', '-album.users', '-user.albums')
+    serialize_rules = ('-user.reviews', '-album.reviews', '-album.users', '-user.albums', '-user.liked')
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     album_id = db.Column(db.Integer, db.ForeignKey('albums.id'))
     rating = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String)
-    likes = db.Column(db.Integer)
+    likes = db.relationship('ReviewLike', backref='review', lazy='dynamic')
 
     @validates('rating')
     def validate_rating(self, key, rt):
         if rt < 1 or rt > 5 or type(rt) != int:
             raise ValueError('Rating must be a number between 1 and 5')
         return rt
+    
+    def review_dict(self):
+        count = self.count_likes()
 
+        a = Album.query.filter_by(id = self.album_id).first()
+        a_dict = {"id": a.id, "title": a.title, "artist": a.artist, "release": a.release, "genre": a.genre, "image": a.image}
+
+        u = User.query.filter_by(id = self.user_id).first()
+        u_dict = {"id": u.id, "first_name": u.first_name, "last_name": u.last_name, "user_name": u.user_name, "email": u.email, "picture": u.picture}
+
+        r = {"id": self.id, "user_id": self.user_id, "album_id": self.album_id, "rating": self.rating,
+             "comment": self.comment, "likes": count, "album": a_dict, "user": u_dict}
+        return r
+
+    def count_likes(self):
+        count = 0
+        for like in self.likes:
+            count = count+1
+
+        return count
+
+class ReviewLike(db.Model):
+    __tablename__ = 'review_likes'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    review_id = db.Column(db.Integer, db.ForeignKey('reviews.id'))
