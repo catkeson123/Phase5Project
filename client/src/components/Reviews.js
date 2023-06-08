@@ -1,9 +1,25 @@
-import React, { useState, useContext } from "react";
+import React, {useContext, useEffect } from "react";
 import { UserContext } from "../context/user";
 import Review from './Review'
+import { ReviewsContext } from "../context/reviews"
 
-function Reviews({reviews}) {
-    const { user, setUser } = useContext(UserContext);
+
+function Reviews() {
+    const { user, fetchUser } = useContext(UserContext);
+
+    const {reviews, setReviews} = useContext(ReviewsContext)
+
+    useEffect( () => {
+        fetch("/reviews").then((response) => {
+            response.json().then((reviews) => {
+              console.log(reviews);
+              setReviews(reviews)});
+        });
+    }, [setReviews, fetchUser])
+
+    useEffect ( () => {
+        fetchUser()
+    }, [])
     
     if (!user) {
         return (
@@ -13,6 +29,8 @@ function Reviews({reviews}) {
         )
     } 
 
+    console.log(user)
+
     let followed_ids = user.followed.map(u => u['id'])  
 
     let followedReviews = reviews.filter((r) => {
@@ -20,6 +38,8 @@ function Reviews({reviews}) {
     })
 
     let displayReviews = followedReviews.map((review) => <Review key={review.id} review={review} />);
+
+    console.log(followedReviews)
 
     return (
         <div className='profile'>

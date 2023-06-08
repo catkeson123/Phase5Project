@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 function ReviewCard ({review, removeReviewFromState, removeReviewFromUserState}) {
     
@@ -33,7 +33,7 @@ function ReviewCard ({review, removeReviewFromState, removeReviewFromUserState})
                     <h2>Album: {review.album.title} by {review.album.artist}</h2>
                     <h1>Rating: {review.rating}</h1>
                     <h3>{showComment ? '' : `"${review.comment}"`}</h3>
-                    <h4>Likes: {review.likes}</h4>
+                    <h4>{review.likes} likes</h4>
                     <button className="button" onClick = {() =>{if(window.confirm('Are you sure you wish to delete this review?')) handleDeleteClick(review.id)}}>DELETE REVIEW</button>
                 </div>
             </div>

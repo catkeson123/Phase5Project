@@ -1,46 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 import "../index.css";
 import Home from "./Home";
 import Albums from "./Albums";
-import AlbumCard from "./AlbumCard";
 import Profile from "./Profile";
 import Header from "./Header";
 import Reviews from "./Reviews";
-import Review from "./Review";
 import Users from "./Users";
-import UserCard from "./UserCard";
 import ViewProfile from "./ViewProfile";
 import { UserProvider } from "../context/user";
+import { ReviewsProvider } from "../context/reviews";
 
 function App() {
-  const [reviews, setReviews] = useState([]);
-
-  useEffect(() => {
-    fetchReviews();
-  }, []);
-  const fetchReviews = () => {
-    fetch("/reviews")
-      .then((r) => r.json())
-      .then((data) => {
-        console.log("REVIEWS:", data);
-        setReviews(data);
-      });
-  };
-  const addReviewToState = (newReview) => {
-    setReviews([...reviews, newReview]);
-  };
-
-  const removeReviewFromState = (deleteID) => {
-    setReviews((reviews) =>
-      reviews.filter((review) => {
-        return review.id !== deleteID;
-      })
-    );
-  };
 
   return (
     <div>
+      <ReviewsProvider>
       <UserProvider>
         <Header />
         <Route exact path="/users/:id">
@@ -51,19 +25,20 @@ function App() {
             <Home />
           </Route>
           <Route exact path="/albums">
-            <Albums addReviewToState={addReviewToState} />
+            <Albums/>
           </Route>
           <Route exact path="/reviews">
-            <Reviews reviews={reviews} />
+            <Reviews/>
           </Route>
           <Route exact path="/users">
             <Users />
           </Route>
           <Route path="/profile">
-            <Profile removeReviewFromState={removeReviewFromState} />
+            <Profile/>
           </Route>
         </Switch>
       </UserProvider>
+      </ReviewsProvider>
     </div>
   );
 }

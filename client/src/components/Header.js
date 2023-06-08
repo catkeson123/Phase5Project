@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, {useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/user";
 import gif from "../music.gif";
@@ -40,7 +40,7 @@ function Header() {
         </NavLink>
       )}
       {user && (
-        <button className="button" onClick={handleLogout}>
+        <button className="button" onClick={() =>{if(window.confirm('Are you sure you wish to log out?')) handleLogout()}}>
           LOGOUT
         </button>
       )}

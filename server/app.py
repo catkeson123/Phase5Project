@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from config import app, db, api, bcrypt
 from models import db, User, Album, Review
 
-# Views go here!
+# Views
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -221,18 +221,6 @@ class Logout(Resource):
 
 api.add_resource(Logout, '/logout')
 
-# class Follow(Resource):
-#     def post(self, id):
-#         if session['user_id']:
-#             curr_user = User.query.filter(User.id == session.get('user_id')).first()
-#         user = User.query.filter_by(id=id).first()
-#         if user is None:
-#             return make_response({'error': 'User not found'}, 404)
-#         curr_user.follow(user)
-#         db.session.commit()
-
-# api.add_resource(Follow, '/follow/<int:id>')
-
 class FollowById(Resource):
     def post(self, id):
 
@@ -247,18 +235,6 @@ class FollowById(Resource):
             return make_response({'message': 'You are already following this user.'}, 201)
 
 api.add_resource(FollowById, '/follow/<int:id>')
-
-# class Unfollow(Resource):
-#     def post(self, id):
-#         if session['user_id']:
-#             curr_user = User.query.filter(User.id == session.get('user_id')).first()
-#         user = User.query.filter_by(id=id).first()
-#         if user is None:
-#             return make_response({'error': 'User not found'}, 404)
-#         curr_user.unfollow(user)
-#         db.session.commit()
-
-# api.add_resource(Unfollow, '/unfollow/<int:id>')
 
 class UnfollowById(Resource):
     def delete(self, id):

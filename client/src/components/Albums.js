@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import AlbumCard from "./AlbumCard"
 import { UserContext } from "../context/user";
 import Search from "./Search"
+import { ReviewsContext } from "../context/reviews"
 
-function Albums({addReviewToState}) {
+function Albums() {
     
     const { user, setUser } = useContext(UserContext);
+    const {addReviewToState} = useContext(ReviewsContext)
 
     const [albums, setAlbums] = useState([]);
 

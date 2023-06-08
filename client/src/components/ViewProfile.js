@@ -2,14 +2,17 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams} from "react-router-dom";
 import Review from "./Review"
 import { UserContext } from "../context/user";
+import { ReviewsContext } from "../context/reviews";
 
 
 function ViewProfile() {
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     const [viewUser, setViewUser] = useState("")
 
     const [following, setFollowing] = useState(false)
+
+    const {fetchReviews} = useContext(ReviewsContext)
 
     const { id } = useParams()
 
@@ -44,18 +47,20 @@ function ViewProfile() {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
             })
-            .then(r => r.json)
+            .then(r => r.json())
             .then(() => {
                 setFollowing(false)
+                fetchReviews()
             })
         } else {
             fetch(`/follow/${viewUser.id}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             })
-            .then(r => r.json)
+            .then(r => r.json())
             .then(() => {
                 setFollowing(true)
+                fetchReviews()
             })
         }
     }

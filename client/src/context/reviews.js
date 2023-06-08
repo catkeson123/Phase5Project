@@ -3,21 +3,37 @@ import React, {useState, useEffect} from "react";
 const ReviewsContext = React.createContext();
 
 function ReviewsProvider({ children }) {
-    const [reviews, setReviews] = useState(null);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
-    fetch("/check_session").then((response) => {
-      if (response.ok) {
-        response.json().then((user) => setUser(user));
-      }
-    });
+      fetchReviews()
     }, []);
 
+    const fetchReviews = () => {
+      fetch("/reviews").then((response) => {
+          response.json().then((reviews) => {
+            console.log(reviews);
+            setReviews(reviews)});
+      });
+    }
+
+    const addReviewToState = (newReview) => {
+      setReviews([...reviews, newReview]);
+    };
+  
+    const removeReviewFromState = (deleteID) => {
+      setReviews((reviews) =>
+        reviews.filter((review) => {
+          return review.id !== deleteID;
+        })
+      );
+    };
+
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <ReviewsContext.Provider value={{ reviews, setReviews, addReviewToState, removeReviewFromState, fetchReviews }}>
             {children}
-        </UserContext.Provider>
+        </ReviewsContext.Provider>
     );
 }
 
-export { UserContext, UserProvider };
+export { ReviewsContext, ReviewsProvider };

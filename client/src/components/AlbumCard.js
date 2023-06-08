@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import AddNewReview from './AddNewReview'
 import NewReviewModal from './NewReviewModal'
 
 function AlbumCard({album, addReviewToState, user, addReviewFromUserState}) {

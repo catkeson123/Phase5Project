@@ -3,7 +3,7 @@ import UserCard from "./UserCard"
 import { UserContext } from "../context/user";
 
 function Users() {
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const[users, setUsers] = useState([]);
 
     useEffect(() => {

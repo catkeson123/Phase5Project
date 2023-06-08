@@ -1,8 +1,5 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/user";
-import { BrowserRouter, Route } from "react-router-dom";
-import Login from "./Login";
-import SignUp from "./SignUp";
 import soundwave from "../soundwave-unscreen.gif"
 import LogInModal from './LogInModal'
 import SignUpModal from './SignUpModal'

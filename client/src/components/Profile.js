@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import ReviewCard from "./ReviewCard"
-import ProfileEditForm from "./ProfileEditForm";
 import { UserContext } from "../context/user";
 import ProfileEditModal from './ProfileEditModal'
+import { ReviewsContext } from "../context/reviews"
 
-function Profile({removeReviewFromState}) {
+function Profile() {
     const { user, setUser } = useContext(UserContext);
+    const { removeReviewFromState } = useContext(ReviewsContext)
 
     const [editModal, setEditModal] = useState(false)
     
@@ -71,7 +72,7 @@ function Profile({removeReviewFromState}) {
             </div>
             <button className="button" onClick={handleClick}>EDIT PROFILE</button>
             <ProfileEditModal editModal={editModal} onEditModalClose={onEditModalClose} user={user} onUpdateProfile={onUpdateProfile}/>
-            <button className="button" onClick={handleLogout}>LOGOUT</button>
+            <button className="button" onClick={() =>{if(window.confirm('Are you sure you wish to log out?')) handleLogout()}}>LOGOUT</button>
         </div>
     )
 }
