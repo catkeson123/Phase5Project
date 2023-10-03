@@ -32,7 +32,7 @@ api.add_resource(Home, '/')
 
 @app.before_request
 def check_if_logged_in():
-    if not session['user_id'] \
+    if ("user_id" not in session or not session['user_id']) \
         and request.endpoint == 'users' :
         return {'error': 'Unauthorized'}, 401
 
